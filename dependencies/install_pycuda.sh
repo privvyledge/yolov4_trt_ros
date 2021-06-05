@@ -4,7 +4,7 @@
 
 set -e
 
-if ! which nvcc > /dev/null; then
+if ! which nvcc >/dev/null; then
   echo "ERROR: nvcc not found"
   exit
 fi
@@ -14,9 +14,10 @@ folder=${HOME}/src
 mkdir -p $folder
 
 echo "** Install requirements"
-sudo apt-get install -y build-essential python3-dev
+sudo apt-get update
+sudo apt-get install -y build-essential python-dev python-pip
 sudo apt-get install -y libboost-python-dev libboost-thread-dev
-pip3 install setuptools
+python -m pip install setuptools
 
 boost_pylib=$(basename /usr/lib/${arch}-linux-gnu/libboost_python*-py3?.so)
 boost_pylibname=${boost_pylib%.so}
@@ -33,11 +34,11 @@ CPU_CORES=$(nproc)
 echo "** cpu cores available: " $CPU_CORES
 tar xzvf pycuda-2019.1.2.tar.gz
 cd pycuda-2019.1.2
-python3 ./configure.py --python-exe=/usr/bin/python3 --cuda-root=/usr/local/cuda --cudadrv-lib-dir=/usr/lib/${arch}-linux-gnu --boost-inc-dir=/usr/include --boost-lib-dir=/usr/lib/${arch}-linux-gnu --boost-python-libname=${boost_pyname} --boost-thread-libname=boost_thread --no-use-shipped-boost
+python ./configure.py --python-exe=/usr/bin/python3 --cuda-root=/usr/local/cuda --cudadrv-lib-dir=/usr/lib/${arch}-linux-gnu --boost-inc-dir=/usr/include --boost-lib-dir=/usr/lib/${arch}-linux-gnu --boost-python-libname=${boost_pyname} --boost-thread-libname=boost_thread --no-use-shipped-boost
 make -j$CPU_CORES
-python3 setup.py build
-python3 setup.py install
+python setup.py build
+python setup.py install
 
 popd
 
-python3 -c "import pycuda; print('pycuda version:', pycuda.VERSION)"
+python -c "import pycuda; print('pycuda version:', pycuda.VERSION)"
