@@ -136,13 +136,13 @@ class yolov4(object):
         detection2d = Detector2DArray()
         detection = Detector2D()
         detection2d.header.stamp = rospy.Time.now()
-    detection2d.header.frame_id = "camera"  # change accordingly
+        detection2d.header.frame_id = "camera"  # change accordingly
         
         for i in range(len(boxes)):
             # boxes : xmin, ymin, xmax, ymax
             for _ in boxes:
-    detection.header.stamp = rospy.Time.now()
-                detection.header.frame_id = "camera" # change accordingly
+                detection.header.stamp = rospy.Time.now()
+                detection.header.frame_id = "camera"  # change accordingly
                 detection.results.id = clss[i]
                 detection.results.score = confs[i]
 
