@@ -6,6 +6,7 @@ import time
 import cv2
 import pycuda.autoinit  # For initializing CUDA driver
 import pycuda.driver as cuda
+import numpy as np
 
 from utils.yolo_classes import get_cls_dict
 from utils.display import open_window, set_display, show_fps
@@ -133,6 +134,7 @@ class yolov4(object):
         confs (List(double))	: Probability scores of all objects
         clss  (List(int))	: Class ID of all classes
         """
+        clss = clss.astype(np.int)
         detection2d = Detector2DArray()
         detection = Detector2D()
         detection2d.header.stamp = rospy.Time.now()
